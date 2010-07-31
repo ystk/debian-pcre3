@@ -14,8 +14,8 @@ m4_define(pcre_prerelease, [])
 m4_define(pcre_date, [2010-03-19])
 
 # Libtool shared library interface versions (current:revision:age)
-m4_define(libpcre_version, [0:1:0])
-m4_define(libpcreposix_version, [0:0:0])
+m4_define(libpcre_version, [15:1:12])
+m4_define(libpcreposix_version, [15:1:12])
 m4_define(libpcrecpp_version, [0:0:0])
 
 AC_PREREQ(2.57)

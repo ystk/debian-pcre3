@@ -79,6 +79,12 @@ static const string empty_string;
 // If the user doesn't ask for any options, we just use this one
 static RE_Options default_options;
 
+// PCRE6.x compatible API
+void RE::Init(const char *c_pat, const RE_Options* options) {
+  const string cxx_pat(c_pat);
+  Init(cxx_pat, options);
+}
+
 void RE::Init(const string& pat, const RE_Options* options) {
   pattern_ = pat;
   if (options == NULL) {

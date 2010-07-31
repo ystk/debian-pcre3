@@ -430,6 +430,12 @@ case $basic_machine in
 	amd64-*)
 		basic_machine=x86_64-`echo $basic_machine | sed 's/^[^-]*-//'`
 		;;
+	amd64)
+		basic_machine=x86_64-pc
+		;;
+	amd64-*)
+		basic_machine=x86_64-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
 	amdahl)
 		basic_machine=580-amdahl
 		os=-sysv
@@ -854,6 +860,10 @@ case $basic_machine in
 	np1)
 		basic_machine=np1-gould
 		;;
+	nv1)
+		basic_machine=nv1-cray
+		os=-unicosmp
+		;;
 	nsr-tandem)
 		basic_machine=nsr-tandem
 		;;
@@ -863,6 +873,10 @@ case $basic_machine in
 		;;
 	openrisc | openrisc-*)
 		basic_machine=or32-unknown
+		;;
+	os400)
+		basic_machine=powerpc-ibm
+		os=-os400
 		;;
 	os400)
 		basic_machine=powerpc-ibm
@@ -1001,6 +1015,10 @@ case $basic_machine in
 		basic_machine=mips-sei
 		os=-seiux
 		;;
+	sei)
+		basic_machine=mips-sei
+		os=-seiux
+		;;
 	sequent)
 		basic_machine=i386-sequent
 		;;
@@ -1010,6 +1028,9 @@ case $basic_machine in
 		;;
 	sh5el)
 		basic_machine=sh5le-unknown
+		;;
+	sh64)
+		basic_machine=sh64-unknown
 		;;
 	sh64)
 		basic_machine=sh64-unknown
@@ -1116,6 +1137,10 @@ case $basic_machine in
 		;;
 	tower | tower-32)
 		basic_machine=m68k-ncr
+		;;
+	tpf)
+		basic_machine=s390x-ibm
+		os=-tpf
 		;;
 	tpf)
 		basic_machine=s390x-ibm
@@ -1341,6 +1366,9 @@ case $os in
 	-linux-dietlibc)
 		os=-linux-dietlibc
 		;;
+	-linux-dietlibc)
+		os=-linux-dietlibc
+		;;
 	-linux*)
 		os=`echo $os | sed -e 's|linux|linux-gnu|'`
 		;;
@@ -1352,6 +1380,9 @@ case $os in
 		;;
 	-opened*)
 		os=-openedition
+		;;
+        -os400*)
+		os=-os400
 		;;
         -os400*)
 		os=-os400
@@ -1380,6 +1411,9 @@ case $os in
 	-syllable*)
 		os=-syllable
 		;;
+	-syllable*)
+		os=-syllable
+		;;
 	-386bsd)
 		os=-bsd
 		;;
@@ -1401,6 +1435,9 @@ case $os in
 		;;
 	-sinix*)
 		os=-sysv4
+		;;
+        -tpf*)
+		os=-tpf
 		;;
         -tpf*)
 		os=-tpf
@@ -1446,6 +1483,12 @@ case $os in
 		;;
 	-dicos*)
 		os=-dicos
+		;;
+	-aros*)
+		os=-aros
+		;;
+	-kaos*)
+		os=-kaos
 		;;
 	-none)
 		;;
@@ -1677,8 +1720,14 @@ case $basic_machine in
 			-os400*)
 				vendor=ibm
 				;;
+			-os400*)
+				vendor=ibm
+				;;
 			-ptx*)
 				vendor=sequent
+				;;
+			-tpf*)
+				vendor=ibm
 				;;
 			-tpf*)
 				vendor=ibm

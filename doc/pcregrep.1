@@ -3,6 +3,7 @@
 pcregrep - a grep with Perl-compatible regular expressions.
 .SH SYNOPSIS
 .B pcregrep [options] [long options] [pattern] [path1 path2 ...]
+.B zpcregrep [options] [long options] [pattern] [file1 file2 ...]
 .
 .SH DESCRIPTION
 .rs
@@ -75,6 +76,9 @@ the matching substrings are being shown.
 If the \fBLC_ALL\fP or \fBLC_CTYPE\fP environment variable is set,
 \fBpcregrep\fP uses the value to set a locale when calling the PCRE library.
 The \fB--locale\fP option can be used to override this.
+.P 
+\fBzpcregrep\fR is a wrapper script that allows pcregrep to work on
+gzip compressed files.
 .
 .SH "SUPPORT FOR COMPRESSED FILES"
 .rs
@@ -459,7 +463,7 @@ there are more than 20 such errors, \fBpcregrep\fP gives up.
 .rs
 .sp
 Exit status is 0 if any matches were found, 1 if no matches were found, and 2
-for syntax errors and non-existent or inacessible files (even if matches were
+for syntax errors and non-existent or inaccessible files (even if matches were
 found in other files) or too many matching errors. Using the \fB-s\fP option to
 suppress error messages about inaccessble files does not affect the return
 code.

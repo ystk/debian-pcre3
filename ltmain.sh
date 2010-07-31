@@ -809,6 +809,34 @@ func_enable_tag ()
       # don't eliminate duplications in $postdeps and $predeps
       opt_duplicate_compiler_generated_deps=:
       ;;
+    tag)
+      tagname="$arg"
+      preserve_args="${preserve_args}=$arg"
+
+      # Check whether tagname contains only valid characters
+      case $tagname in
+      *[!-_A-Za-z0-9,/]*)
+	$echo "$progname: invalid tag name: $tagname" 1>&2
+	exit 1
+	;;
+      esac
+
+      case $tagname in
+      CC)
+	# Don't test for the "default" C tag, as we know, it's there, but
+	# not specially marked.
+	;;
+      *)
+	if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
+	  taglist="$taglist $tagname"
+	  # Evaluate the configuration.
+	  eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^# ### END LIBTOOL TAG CONFIG: '$tagname'$/p' < $0`"
+	else
+	  $echo "$progname: ignoring unknown tag $tagname" 1>&2
+	fi
+	;;
+      esac
+      ;;
     *)
       opt_duplicate_compiler_generated_deps=$opt_duplicate_deps
       ;;
@@ -4699,6 +4727,11 @@ func_mode_link ()
         prev=weak
 	continue
 	;;
+      -version-number)
+	prev=vinfo
+	vinfo_number=yes
+	continue
+	;;
 
       -Wc,*)
 	func_stripname '-Wc,' '' "$arg"
@@ -4773,6 +4806,11 @@ func_mode_link ()
         compiler_flags="$compiler_flags $arg"
         continue
         ;;
+
+      -XCClinker)
+	prev=xcclinker
+	continue
+	;;
 
       # Some other compiler flag.
       -* | +*)
@@ -5699,6 +5737,14 @@ func_mode_link ()
 		*-*-sunos*) add_shlibpath="$dir" ;;
 		esac
 		add_dir="-L$dir"
+		# Try looking first in the location we're being installed to.
+		if test -n "$inst_prefix_dir"; then
+		  case "$libdir" in
+		    [\\/]*)
+		      add_dir="$add_dir -L$inst_prefix_dir$libdir"
+		      ;;
+		  esac
+		fi
 		add="-l$name"
 	      elif test "$hardcode_shlibpath_var" = no; then
 		add_shlibpath="$dir"
@@ -8355,6 +8401,7 @@ func_mode_uninstall ()
 	func_show_eval "rmdir $dir >/dev/null 2>&1"
       fi
     done
+    objdir="$origobjdir"
 
     exit $exit_status
 }

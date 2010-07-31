@@ -222,17 +222,17 @@ libpcrecpp_la_LIBADD = libpcre.la
 TESTS += pcrecpp_unittest
 noinst_PROGRAMS += pcrecpp_unittest
 pcrecpp_unittest_SOURCES = pcrecpp_unittest.cc
-pcrecpp_unittest_LDADD = libpcrecpp.la
+pcrecpp_unittest_LDADD = libpcrecpp.la libpcre.la
 
 TESTS += pcre_scanner_unittest
 noinst_PROGRAMS += pcre_scanner_unittest
 pcre_scanner_unittest_SOURCES = pcre_scanner_unittest.cc
-pcre_scanner_unittest_LDADD = libpcrecpp.la
+pcre_scanner_unittest_LDADD = libpcrecpp.la libpcre.la
 
 TESTS += pcre_stringpiece_unittest
 noinst_PROGRAMS += pcre_stringpiece_unittest
 pcre_stringpiece_unittest_SOURCES = pcre_stringpiece_unittest.cc
-pcre_stringpiece_unittest_LDADD = libpcrecpp.la
+pcre_stringpiece_unittest_LDADD = libpcrecpp.la libpcre.la
 
 endif # WITH_PCRE_CPP
 
