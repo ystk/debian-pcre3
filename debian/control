@@ -1,11 +1,12 @@
 Source: pcre3
 Section: libs
 Priority: optional
-Maintainer: Mark Baker <mark@mnb.org.uk>
-Standards-Version: 3.8.3
-Build-Depends: debhelper (>= 5.0.22)
+Maintainer:  Mark Baker <mark@mnb.org.uk>
+Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 5.0.22), dpkg-dev (>= 1.16.0)
 
 Package: libpcre3
+Section: libs
 Architecture: any
 Priority: important
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -18,6 +19,8 @@ Breaks:
  cduce (<< 0.5.3-2~),
  galax (<< 1.1-7~),
  liquidsoap (<< 0.9.2-3~)
+Multi-Arch: same
+Pre-Depends: multiarch-support
 Description: Perl 5 Compatible Regular Expression Library - runtime files
  This is a library of functions to support regular expressions whose syntax 
  and semantics are as close as possible to those of the Perl 5 language.
@@ -38,10 +41,14 @@ Description: Perl 5 Compatible Regular Expression Library - runtime files (udeb)
  This package contains the runtime libraries for the Debian Installer (udeb).
 
 Package: libpcrecpp0
+Section: libs
 Architecture: any
+Priority: optional
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Conflicts: libpcre3 (<< 6.4-1.1)
 Replaces: libpcre3 (<< 6.4-1.1)
+Multi-Arch: same
+Pre-Depends: multiarch-support
 Description: Perl 5 Compatible Regular Expression Library - C++ runtime files
  This is a C++ library of functions to support regular expressions whose syntax 
  and semantics are as close as possible to those of the Perl 5 language.
@@ -61,9 +68,11 @@ Description: Perl 5 Compatible Regular Expression Library - development files
  libraries, and documentation.
 
 Package: libpcre3-dbg
-Section: libdevel
+Section: debug
+Priority: extra
 Architecture: any
 Depends: libpcre3 (= ${binary:Version}), libpcrecpp0 (= ${binary:Version}),  ${misc:Depends}
+Multi-Arch: same
 Description: Perl 5 Compatible Regular Expression Library - debug symbols
  This is a library of functions to support regular expressions whose syntax 
  and semantics are as close as possible to those of the Perl 5 language.

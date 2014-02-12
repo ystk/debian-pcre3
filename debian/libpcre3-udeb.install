@@ -1,2 +1,2 @@
-debian/tmp/usr/lib/libpcre.so.*
-debian/tmp/usr/lib/libpcreposix.so.*
+debian/tmp/usr/lib/*/libpcre.so.*	usr/lib
+debian/tmp/usr/lib/*/libpcreposix.so.*	usr/lib

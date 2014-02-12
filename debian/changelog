@@ -1,3 +1,76 @@
+pcre3 (1:8.30-5) unstable; urgency=low
+
+  * There is no use in including debug information for the libraries from
+    the udeb in the debug package; more importantly, because the
+    installation system isn't multiarch, if they are included they result
+    in arch specific files in arch independent paths (debug package is 
+    Multi-arch:same). Removed. (Closes: #670018)
+
+ -- Mark Baker <mark@mnb.org.uk>  Tue, 01 May 2012 22:38:42 +0100
+
+pcre3 (1:8.30-4) unstable; urgency=low
+
+  * Reluctantly using an epoch, as it seems the funny version number with
+    extra dots causes problems
+  * Bumped standard version to 3.9.3. No changes needed
+  * Converted to use new source format / quilt
+  * Put back obsolete pcre_info() API that upstream have dropped (Closes:
+    #665300, #665356)
+  * Don't include pcregrep binary in debug package
+
+  Thanks to Elimar Riesebieter for the conversion to the new source format.
+
+ -- Mark Baker <mark@mnb.org.uk>  Fri, 23 Mar 2012 22:34:54 +0000
+
+pcre3 (8.30..-3) unstable; urgency=low
+
+  * configure: fixed libpcreposix version (this is not the same bug as the
+    previous one, though it's in the same few lines)
+
+ -- Mark Baker <mark@mnb.org.uk>  Thu, 22 Mar 2012 19:45:03 +0000
+
+pcre3 (8.30..-2) unstable; urgency=low
+
+  * configure: Correct library version so soname is libpcre.so.3 instead
+    of .2 (Closes: #664983)
+  * Horrible version number is because of NMU of "8.30.really8.12-1.1";
+    this will sort between that and 8.31-1
+  
+ -- Mark Baker <mark@mnb.org.uk>  Thu, 22 Mar 2012 17:52:35 +0000
+
+pcre3 (8.30-1) unstable; urgency=low
+
+  * New upstream release (Closes:#664166)
+
+ -- Mark Baker <mark@mnb.org.uk>  Wed, 21 Mar 2012 21:03:39 +0000
+
+pcre3 (8.12-4) unstable; urgency=low
+
+  * Multi-arch support. Thanks Steve Langasek for patch (Closes: 634250)
+
+ -- Mark Baker <mark@mnb.org.uk>  Mon, 18 Jul 2011 21:59:44 +0100
+
+pcre3 (8.12-3) unstable; urgency=low
+
+  * debian/rules: Increased shlib version to 8.10 (Closes: #612942,
+    #613227, #613469, #614012, #615019)
+
+ -- Mark Baker <mark@mnb.org.uk>  Sun, 20 Feb 2011 12:46:44 +0000
+
+pcre3 (8.12-2) unstable; urgency=low
+
+  * Include changes from Stéphane's NMU (including fix for bug 581202)
+    that were accidentally omitted in previous release.
+  * debian/control: -dbg package should be section debug, priority extra
+
+ -- Mark Baker <mark@mnb.org.uk>  Tue, 08 Feb 2011 20:38:49 +0000
+
+pcre3 (8.12-1) unstable; urgency=low
+
+  * New upstream release (Closes: #554242)
+
+ -- Mark Baker <mark@mnb.org.uk>  Mon, 07 Feb 2011 23:53:42 +0000
+
 pcre3 (8.02-1.1) unstable; urgency=low
 
   * Non-maintainer upload.
@@ -332,10 +405,10 @@ pcre3 (3.3-1) unstable; urgency=low
 
  -- Mark Baker <mbaker@iee.org>  Sat, 19 Aug 2000 13:44:00 +0000
 
-What follows is the changelog from pcre 3, up to the point where the pcre3
-package was made.
-
 pcre2 (2.08-1) unstable; urgency=low
+
+  What follows is the changelog from pcre2, up to the point where the pcre3
+  package was made.
 
   * new upstream version (#50386)
   * put -lc after -lpcre when linking libpcreposix (#50046)
@@ -394,13 +467,13 @@ pcre2 (2.02-1) unstable; urgency=low
 
  -- Mark Baker <mbaker@iee.org>  Thu, 28 Jan 1999 00:45:00 +0000
 
-What follows is the changelog from pcre 1, up to the point where the pcre2
-package was made.
-
-The changes are not that large but the API, and therefore the ABI, are
-changed so version 2 is not compatible.
-
 pcre (1.09-2) unstable; urgency=low
+
+  What follows is the changelog from pcre 1, up to the point where the pcre2
+  package was made.
+
+  The changes are not that large but the API, and therefore the ABI, are
+  changed so version 2 is not compatible.
 
   * pcreposix.c,pcreposix.h: prefixed function names with pcreposix_
   * pcreposix.h: #defines so un-prefixed names can be used
