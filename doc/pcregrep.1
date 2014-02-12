@@ -46,11 +46,18 @@ change how \fBpcregrep\fP behaves. In particular, the \fB-M\fP option makes it
 possible to search for patterns that span line boundaries. What defines a line
 boundary is controlled by the \fB-N\fP (\fB--newline\fP) option.
 .P
-Patterns are limited to 8K or BUFSIZ characters, whichever is the greater.
-BUFSIZ is defined in \fB<stdio.h>\fP. When there is more than one pattern
-(specified by the use of \fB-e\fP and/or \fB-f\fP), each pattern is applied to
-each line in the order in which they are defined, except that all the \fB-e\fP
-patterns are tried before the \fB-f\fP patterns.
+The amount of memory used for buffering files that are being scanned is
+controlled by a parameter that can be set by the \fB--buffer-size\fP option.
+The default value for this parameter is specified when \fBpcregrep\fP is built,
+with the default default being 20K. A block of memory three times this size is
+used (to allow for buffering "before" and "after" lines). An error occurs if a
+line overflows the buffer.
+.P
+Patterns are limited to 8K or BUFSIZ bytes, whichever is the greater. BUFSIZ is
+defined in \fB<stdio.h>\fP. When there is more than one pattern (specified by
+the use of \fB-e\fP and/or \fB-f\fP), each pattern is applied to each line in
+the order in which they are defined, except that all the \fB-e\fP patterns are
+tried before the \fB-f\fP patterns.
 .P
 By default, as soon as one pattern matches (or fails to match when \fB-v\fP is
 used), no further patterns are considered. However, if \fB--colour\fP (or
@@ -76,6 +83,7 @@ If the \fBLC_ALL\fP or \fBLC_CTYPE\fP environment variable is set,
 \fBpcregrep\fP uses the value to set a locale when calling the PCRE library.
 The \fB--locale\fP option can be used to override this.
 .
+.
 .SH "SUPPORT FOR COMPRESSED FILES"
 .rs
 .sp
@@ -86,16 +94,18 @@ of these file types by running it with the \fB--help\fP option. If the
 appropriate support is not present, files are treated as plain text. The
 standard input is always so treated.
 .
+.
 .SH OPTIONS
 .rs
 .sp
 The order in which some of the options appear can affect the output. For
 example, both the \fB-h\fP and \fB-l\fP options affect the printing of file
 names. Whichever comes later in the command line will be the one that takes
-effect.
+effect. Numerical values for options may be followed by K or M, to signify
+multiplication by 1024 or 1024*1024 respectively.
 .TP 10
 \fB--\fP
-This terminate the list of options. It is useful if the next item on the
+This terminates the list of options. It is useful if the next item on the
 command line starts with a hyphen but is not an option. This allows for the
 processing of patterns and filenames that start with hyphens.
 .TP
@@ -114,6 +124,10 @@ colon for the context lines. A line containing "--" is output between each
 group of lines, unless they are in fact contiguous in the input file. The value
 of \fInumber\fP is expected to be relatively small. However, \fBpcregrep\fP
 guarantees to have up to 8K of preceding text available for context output.
+.TP
+\fB--buffer-size=\fP\fInumber\fP
+Set the parameter that controls how much memory is used for buffering files
+that are being scanned.
 .TP
 \fB-C\fP \fInumber\fP, \fB--context=\fP\fInumber\fP
 Output \fInumber\fP lines of context both before and after each matching line.
@@ -141,7 +155,7 @@ coloured. The value (which is optional, see above) may be "never", "always", or
 connected to a terminal. More resources are used when colouring is enabled,
 because \fBpcregrep\fP has to search for all possible matches in a line, not
 just one, in order to colour them all.
-
+.sp
 The colour that is used can be specified by setting the environment variable
 PCREGREP_COLOUR or PCREGREP_COLOR. The value of this variable should be a
 string of two numbers, separated by a semicolon. They are copied directly into
@@ -182,19 +196,19 @@ that matched.
 When \fBpcregrep\fP is searching the files in a directory as a consequence of
 the \fB-r\fP (recursive search) option, any regular files whose names match the
 pattern are excluded. Subdirectories are not excluded by this option; they are
-searched recursively, subject to the \fB--exclude_dir\fP and
+searched recursively, subject to the \fB--exclude-dir\fP and
 \fB--include_dir\fP options. The pattern is a PCRE regular expression, and is
 matched against the final component of the file name (not the entire path). If
 a file name matches both \fB--include\fP and \fB--exclude\fP, it is excluded.
 There is no short form for this option.
 .TP
-\fB--exclude_dir\fP=\fIpattern\fP
+\fB--exclude-dir\fP=\fIpattern\fP
 When \fBpcregrep\fP is searching the contents of a directory as a consequence
 of the \fB-r\fP (recursive search) option, any subdirectories whose names match
 the pattern are excluded. (Note that the \fP--exclude\fP option does not affect
 subdirectories.) The pattern is a PCRE regular expression, and is matched
 against the final component of the name (not the entire path). If a
-subdirectory name matches both \fB--include_dir\fP and \fB--exclude_dir\fP, it
+subdirectory name matches both \fB--include-dir\fP and \fB--exclude-dir\fP, it
 is excluded. There is no short form for this option.
 .TP
 \fB-F\fP, \fB--fixed-strings\fP
@@ -248,19 +262,19 @@ Ignore upper/lower case distinctions during comparisons.
 When \fBpcregrep\fP is searching the files in a directory as a consequence of
 the \fB-r\fP (recursive search) option, only those regular files whose names
 match the pattern are included. Subdirectories are always included and searched
-recursively, subject to the \fP--include_dir\fP and \fB--exclude_dir\fP
+recursively, subject to the \fP--include-dir\fP and \fB--exclude-dir\fP
 options. The pattern is a PCRE regular expression, and is matched against the
 final component of the file name (not the entire path). If a file name matches
 both \fB--include\fP and \fB--exclude\fP, it is excluded. There is no short
 form for this option.
 .TP
-\fB--include_dir\fP=\fIpattern\fP
+\fB--include-dir\fP=\fIpattern\fP
 When \fBpcregrep\fP is searching the contents of a directory as a consequence
 of the \fB-r\fP (recursive search) option, only those subdirectories whose
 names match the pattern are included. (Note that the \fB--include\fP option
 does not affect subdirectories.) The pattern is a PCRE regular expression, and
 is matched against the final component of the name (not the entire path). If a
-subdirectory name matches both \fB--include_dir\fP and \fB--exclude_dir\fP, it
+subdirectory name matches both \fB--include-dir\fP and \fB--exclude-dir\fP, it
 is excluded. There is no short form for this option.
 .TP
 \fB-L\fP, \fB--files-without-match\fP
@@ -282,6 +296,16 @@ This option supplies a name to be used for the standard input when file names
 are being output. If not supplied, "(standard input)" is used. There is no
 short form for this option.
 .TP
+\fB--line-buffered\fP
+When this option is given, input is read and processed line by line, and the
+output is flushed after each write. By default, input is read in large chunks,
+unless \fBpcregrep\fP can determine that it is reading from a terminal (which
+is currently possible only in Unix environments). Output to terminal is
+normally automatically flushed by the operating system. This option can be
+useful when the input or output is attached to a pipe and you do not want
+\fBpcregrep\fP to buffer up large amounts of data. However, its use will affect
+performance, and the \fB-M\fP (multiline) option ceases to work.
+.TP
 \fB--line-offsets\fP
 Instead of showing lines or parts of lines that match, show each match as a
 line number, the offset from the start of the line, and a length. The line
@@ -297,26 +321,56 @@ the value in the \fBLC_ALL\fP or \fBLC_CTYPE\fP environment variables. If no
 locale is specified, the PCRE library's default (usually the "C" locale) is
 used. There is no short form for this option.
 .TP
+\fB--match-limit\fP=\fInumber\fP
+Processing some regular expression patterns can require a very large amount of
+memory, leading in some cases to a program crash if not enough is available.
+Other patterns may take a very long time to search for all possible matching
+strings. The \fBpcre_exec()\fP function that is called by \fBpcregrep\fP to do
+the matching has two parameters that can limit the resources that it uses.
+.sp
+The \fB--match-limit\fP option provides a means of limiting resource usage
+when processing patterns that are not going to match, but which have a very
+large number of possibilities in their search trees. The classic example is a
+pattern that uses nested unlimited repeats. Internally, PCRE uses a function
+called \fBmatch()\fP which it calls repeatedly (sometimes recursively). The
+limit set by \fB--match-limit\fP is imposed on the number of times this
+function is called during a match, which has the effect of limiting the amount
+of backtracking that can take place.
+.sp
+The \fB--recursion-limit\fP option is similar to \fB--match-limit\fP, but
+instead of limiting the total number of times that \fBmatch()\fP is called, it
+limits the depth of recursive calls, which in turn limits the amount of memory
+that can be used. The recursion depth is a smaller number than the total number
+of calls, because not all calls to \fBmatch()\fP are recursive. This limit is
+of use only if it is set smaller than \fB--match-limit\fP.
+.sp
+There are no short forms for these options. The default settings are specified
+when the PCRE library is compiled, with the default default being 10 million.
+.TP
 \fB-M\fP, \fB--multiline\fP
 Allow patterns to match more than one line. When this option is given, patterns
 may usefully contain literal newline characters and internal occurrences of ^
-and $ characters. The output for any one match may consist of more than one
-line. When this option is set, the PCRE library is called in "multiline" mode.
+and $ characters. The output for a successful match may consist of more than
+one line, the last of which is the one in which the match ended. If the matched
+string ends with a newline sequence the output ends at the end of that line.
+.sp
+When this option is set, the PCRE library is called in "multiline" mode.
 There is a limit to the number of lines that can be matched, imposed by the way
 that \fBpcregrep\fP buffers the input file as it scans it. However,
 \fBpcregrep\fP ensures that at least 8K characters or the rest of the document
 (whichever is the shorter) are available for forward matching, and similarly
 the previous 8K characters (or all the previous characters, if fewer than 8K)
-are guaranteed to be available for lookbehind assertions.
+are guaranteed to be available for lookbehind assertions. This option does not
+work when input is read line by line (see \fP--line-buffered\fP.)
 .TP
-\fB-N\fP \fInewline-type\fP, \fB--newline=\fP\fInewline-type\fP
+\fB-N\fP \fInewline-type\fP, \fB--newline\fP=\fInewline-type\fP
 The PCRE library supports five different conventions for indicating
 the ends of lines. They are the single-character sequences CR (carriage return)
 and LF (linefeed), the two-character sequence CRLF, an "anycrlf" convention,
 which recognizes any of the preceding three types, and an "any" convention, in
 which any Unicode line ending sequence is assumed to end a line. The Unicode
 sequences are the three just mentioned, plus VT (vertical tab, U+000B), FF
-(formfeed, U+000C), NEL (next line, U+0085), LS (line separator, U+2028), and
+(form feed, U+000C), NEL (next line, U+0085), LS (line separator, U+2028), and
 PS (paragraph separator, U+2029).
 .sp
 When the PCRE library is built, a default line-ending sequence is specified.
@@ -334,14 +388,33 @@ for matching lines or a hyphen for context lines. If the filename is also being
 output, it precedes the line number. This option is forced if
 \fB--line-offsets\fP is used.
 .TP
+\fB--no-jit\fP
+If the PCRE library is built with support for just-in-time compiling (which
+speeds up matching), \fBpcregrep\fP automatically makes use of this, unless it
+was explicitly disabled at build time. This option can be used to disable the
+use of JIT at run time. It is provided for testing and working round problems.
+It should never be needed in normal use.
+.TP
 \fB-o\fP, \fB--only-matching\fP
-Show only the part of the line that matched a pattern. In this mode, no
-context is shown. That is, the \fB-A\fP, \fB-B\fP, and \fB-C\fP options are
-ignored. If there is more than one match in a line, each of them is shown
-separately. If \fB-o\fP is combined with \fB-v\fP (invert the sense of the
-match to find non-matching lines), no output is generated, but the return code
-is set appropriately. This option is mutually exclusive with
-\fB--file-offsets\fP and \fB--line-offsets\fP.
+Show only the part of the line that matched a pattern instead of the whole
+line. In this mode, no context is shown. That is, the \fB-A\fP, \fB-B\fP, and
+\fB-C\fP options are ignored. If there is more than one match in a line, each
+of them is shown separately. If \fB-o\fP is combined with \fB-v\fP (invert the
+sense of the match to find non-matching lines), no output is generated, but the
+return code is set appropriately. If the matched portion of the line is empty,
+nothing is output unless the file name or line number are being printed, in
+which case they are shown on an otherwise empty line. This option is mutually
+exclusive with \fB--file-offsets\fP and \fB--line-offsets\fP.
+.TP
+\fB-o\fP\fInumber\fP, \fB--only-matching\fP=\fInumber\fP
+Show only the part of the line that matched the capturing parentheses of the
+given number. Up to 32 capturing parentheses are supported. Because these
+options can be given without an argument (see above), if an argument is
+present, it must be given in the same shell item, for example, -o3 or
+--only-matching=2. The comments given for the non-argument case above also
+apply to this case. If the specified capturing parentheses do not exist in the
+pattern, or were not set in the match, nothing is output unless the file name
+or line number are being printed.
 .TP
 \fB-q\fP, \fB--quiet\fP
 Work quietly, that is, display nothing except error messages. The exit
@@ -353,6 +426,9 @@ taking note of any \fB--include\fP and \fB--exclude\fP settings. By default, a
 directory is read as a normal file; in some operating systems this gives an
 immediate end-of-file. This option is a shorthand for setting the \fB-d\fP
 option to "recurse".
+.TP
+\fB--recursion-limit\fP=\fInumber\fP
+See \fB--match-limit\fP above.
 .TP
 \fB-s\fP, \fB--no-messages\fP
 Suppress error messages about non-existent or unreadable files. Such files are
@@ -406,11 +482,18 @@ convert this to an appropriate sequence if the output is sent to a file.
 .SH "OPTIONS COMPATIBILITY"
 .rs
 .sp
-The majority of short and long forms of \fBpcregrep\fP's options are the same
-as in the GNU \fBgrep\fP program. Any long option of the form
+Many of the short and long forms of \fBpcregrep\fP's options are the same
+as in the GNU \fBgrep\fP program (version 2.5.4). Any long option of the form
 \fB--xxx-regexp\fP (GNU terminology) is also available as \fB--xxx-regex\fP
-(PCRE terminology). However, the \fB--locale\fP, \fB-M\fP, \fB--multiline\fP,
-\fB-u\fP, and \fB--utf-8\fP options are specific to \fBpcregrep\fP. If both the
+(PCRE terminology). However, the \fB--file-offsets\fP, \fB--include-dir\fP,
+\fB--line-offsets\fP, \fB--locale\fP, \fB--match-limit\fP, \fB-M\fP,
+\fB--multiline\fP, \fB-N\fP, \fB--newline\fP, \fB--recursion-limit\fP,
+\fB-u\fP, and \fB--utf-8\fP options are specific to \fBpcregrep\fP, as is the
+use of the \fB--only-matching\fP option with a capturing parentheses number.
+.P
+Although most of the common options work the same way, a few are different in
+\fBpcregrep\fP. For example, the \fB--include\fP option's argument is a glob
+for GNU \fBgrep\fP, but a regular expression for \fBpcregrep\fP. If both the
 \fB-c\fP and \fB-l\fP options are given, GNU grep lists only file names,
 without counts, but \fBpcregrep\fP gives the counts.
 .
@@ -419,14 +502,18 @@ without counts, but \fBpcregrep\fP gives the counts.
 .rs
 .sp
 There are four different ways in which an option with data can be specified.
-If a short form option is used, the data may follow immediately, or in the next
-command line item. For example:
+If a short form option is used, the data may follow immediately, or (with one
+exception) in the next command line item. For example:
 .sp
   -f/some/file
   -f /some/file
 .sp
+The exception is the \fB-o\fP option, which may appear with or without data.
+Because of this, if data is present, it must follow immediately in the same
+item, for example -o3.
+.P
 If a long form option is used, the data may appear in the same command line
-item, separated by an equals character, or (with one exception) it may appear
+item, separated by an equals character, or (with two exceptions) it may appear
 in the next command line item. For example:
 .sp
   --file=/some/file
@@ -437,10 +524,10 @@ in a shell command, and have the shell expand ~ to a home directory, you must
 separate the file name from the option, because the shell does not treat ~
 specially unless it is at the start of an item.
 .P
-The exception to the above is the \fB--colour\fP (or \fB--color\fP) option,
-for which the data is optional. If this option does have data, it must be given
-in the first form, using an equals character. Otherwise it will be assumed that
-it has no data.
+The exceptions to the above are the \fB--colour\fP (or \fB--color\fP) and
+\fB--only-matching\fP options, for which the data is optional. If one of these
+options does have data, it must be given in the first form, using an equals
+character. Otherwise \fBpcregrep\fP will assume that it has no data.
 .
 .
 .SH "MATCHING ERRORS"
@@ -453,16 +540,21 @@ digit. The PCRE matching function has a resource limit that causes it to abort
 in these circumstances. If this happens, \fBpcregrep\fP outputs an error
 message and the line that caused the problem to the standard error stream. If
 there are more than 20 such errors, \fBpcregrep\fP gives up.
+.P
+The \fB--match-limit\fP option of \fBpcregrep\fP can be used to set the overall
+resource limit; there is a second option called \fB--recursion-limit\fP that
+sets a limit on the amount of memory (usually stack) that is used (see the
+discussion of these options above).
 .
 .
 .SH DIAGNOSTICS
 .rs
 .sp
 Exit status is 0 if any matches were found, 1 if no matches were found, and 2
-for syntax errors and non-existent or inacessible files (even if matches were
-found in other files) or too many matching errors. Using the \fB-s\fP option to
-suppress error messages about inaccessble files does not affect the return
-code.
+for syntax errors, overlong lines, non-existent or inaccessible files (even if
+matches were found in other files) or too many matching errors. Using the
+\fB-s\fP option to suppress error messages about inaccessible files does not
+affect the return code.
 .
 .
 .SH "SEE ALSO"
@@ -485,6 +577,6 @@ Cambridge CB2 3QH, England.
 .rs
 .sp
 .nf
-Last updated: 13 September 2009
-Copyright (c) 1997-2009 University of Cambridge.
+Last updated: 06 September 2011
+Copyright (c) 1997-2011 University of Cambridge.
 .fi

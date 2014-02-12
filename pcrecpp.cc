@@ -37,6 +37,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <limits.h>      /* for SHRT_MIN, USHRT_MAX, etc */
+#include <string.h>      /* for memcpy */
 #include <assert.h>
 #include <errno.h>
 #include <string>
@@ -383,7 +384,6 @@ int RE::GlobalReplace(const StringPiece& rewrite,
   int vec[kVecSize];
   string out;
   int start = 0;
-  int lastend = -1;
   bool last_match_was_empty_string = false;
 
   while (start <= static_cast<int>(str->length())) {
@@ -439,7 +439,6 @@ int RE::GlobalReplace(const StringPiece& rewrite,
     out.append(*str, start, matchstart - start);
     Rewrite(&out, rewrite, *str, vec, matches);
     start = matchend;
-    lastend = matchend;
     count++;
     last_match_was_empty_string = (matchstart == matchend);
   }
@@ -605,7 +604,7 @@ bool RE::DoMatch(const StringPiece& text,
                                        // (as for kVecSize)
   int space[21];   // use stack allocation for small vecsize (common case)
   int* vec = vecsize <= 21 ? space : new int[vecsize];
-  bool retval = DoMatchImpl(text, anchor, consumed, args, n, vec, vecsize);
+  bool retval = DoMatchImpl(text, anchor, consumed, args, n, vec, (int)vecsize);
   if (vec != space) delete [] vec;
   return retval;
 }

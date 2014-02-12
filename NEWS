@@ -1,6 +1,95 @@
 News about PCRE releases
 ------------------------
 
+Release 8.30 04-February-2012
+-----------------------------
+
+Release 8.30 introduces a major new feature: support for 16-bit character
+strings, compiled as a separate library. There are a few changes to the
+8-bit library, in addition to some bug fixes.
+
+. The pcre_info() function, which has been obsolete for over 10 years, has
+  been removed.
+
+. When a compiled pattern was saved to a file and later reloaded on a host
+  with different endianness, PCRE used automatically to swap the bytes in some
+  of the data fields. With the advent of the 16-bit library, where more of this
+  swapping is needed, it is no longer done automatically. Instead, the bad
+  endianness is detected and a specific error is given. The user can then call
+  a new function called pcre_pattern_to_host_byte_order() (or an equivalent
+  16-bit function) to do the swap.
+
+. In UTF-8 mode, the values 0xd800 to 0xdfff are not legal Unicode
+  code points and are now faulted. (They are the so-called "surrogates"
+  that are reserved for coding high values in UTF-16.)
+
+
+Release 8.21 12-Dec-2011
+------------------------
+
+This is almost entirely a bug-fix release. The only new feature is the ability
+to obtain the size of the memory used by the JIT compiler.
+
+
+Release 8.20 21-Oct-2011
+------------------------
+
+The main change in this release is the inclusion of Zoltan Herczeg's
+just-in-time compiler support, which can be accessed by building PCRE with
+--enable-jit. Large performance benefits can be had in many situations. 8.20
+also fixes an unfortunate bug that was introduced in 8.13 as well as tidying up
+a number of infelicities and differences from Perl.
+
+
+Release 8.13 16-Aug-2011
+------------------------
+
+This is mainly a bug-fix release. There has been a lot of internal refactoring.
+The Unicode tables have been updated. The only new feature in the library is
+the passing of *MARK information to callouts. Some additions have been made to
+pcretest to make testing easier and more comprehensive. There is a new option
+for pcregrep to adjust its internal buffer size.
+
+
+Release 8.12 15-Jan-2011
+------------------------
+
+This release fixes some bugs in pcregrep, one of which caused the tests to fail
+on 64-bit big-endian systems. There are no changes to the code of the library.
+
+
+Release 8.11 10-Dec-2010
+------------------------
+
+A number of bugs in the library and in pcregrep have been fixed. As always, see
+ChangeLog for details. The following are the non-bug-fix changes:
+
+. Added --match-limit and --recursion-limit to pcregrep.
+
+. Added an optional parentheses number to the -o and --only-matching options
+  of pcregrep.
+
+. Changed the way PCRE_PARTIAL_HARD affects the matching of $, \z, \Z, \b, and
+  \B.
+
+. Added PCRE_ERROR_SHORTUTF8 to make it possible to distinguish between a
+  bad UTF-8 sequence and one that is incomplete when using PCRE_PARTIAL_HARD.
+
+. Recognize (*NO_START_OPT) at the start of a pattern to set the PCRE_NO_
+  START_OPTIMIZE option, which is now allowed at compile time
+
+
+Release 8.10 25-Jun-2010
+------------------------
+
+There are two major additions: support for (*MARK) and friends, and the option
+PCRE_UCP, which changes the behaviour of \b, \d, \s, and \w (and their
+opposites) so that they make use of Unicode properties. There are also a number
+of lesser new features, and several bugs have been fixed. A new option,
+--line-buffered, has been added to pcregrep, for use when it is connected to
+pipes.
+
+
 Release 8.02 19-Mar-2010
 ------------------------
 
