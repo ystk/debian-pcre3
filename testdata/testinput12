@@ -4,7 +4,9 @@ and a couple of things that are different with JIT. --/
 
 /abc/S+I
 
-/ab(*COMMIT)/S+I
+/(?(?C1)(?=a)a)/S+I
+
+/(?(?C1)(?=a)a)/S!+I
 
 /abc/S+I>testsavedregex
 
@@ -15,5 +17,74 @@ and a couple of things that are different with JIT. --/
 
 /(?(R)a*(?1)|((?R))b)/S+
     aaaabcde
+    
+/-- Test various compile modes --/ 
+    
+/abcd/S++
+    abcd
+    xyz  
+
+/abcd/S+
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++1
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+    xyz\P
+
+/abcd/S++2
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++3
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++4
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++5
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++6
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+
+/abcd/S++7
+    abcd
+    ab\P
+    ab\P\P
+    xyz
+    
+/abcd/S++2I 
+
+/(*NO_START_OPT)a(*:m)b/KS++
+    a
+
+/^12345678abcd/mS++
+    12345678abcd
 
 /-- End of testinput12 --/

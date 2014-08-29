@@ -1,5 +1,7 @@
-/-- This set of tests is for UTF-16 support, and is relevant only to the 16-bit
-    library. --/
+/-- This set of tests is for UTF-16 and UTF-32 support, and is relevant only to
+    the 16- and 32-bit libraries. --/
+    
+< forbid W 
 
 /ÃÃÃxxx/8?DZSS
 
@@ -8,9 +10,11 @@
 
 /X(\C{3})/8
     X\x{11234}Y
+    X\x{11234}YZ
 
 /X(\C{4})/8
     X\x{11234}YZ
+    X\x{11234}YZW
 
 /X\C*/8
     XYZabcdce
@@ -40,6 +44,7 @@
 
 /a\C\Cb/8
     a\x{12257}b
+    a\x{12257}\x{11234}b
     ** Failers
     a\x{100}b
 
@@ -153,7 +158,6 @@ correctly, but that messes up comparisons). --/
 /^[\QÄ€\E-\QÅ\E/BZ8
 
 /X/8
-    \x{0}\x{d7ff}\x{e000}\x{10ffff}
     \x{d800}
     \x{d800}\?
     \x{da00}
@@ -166,12 +170,19 @@ correctly, but that messes up comparisons). --/
     \x{dfff}\?
     \x{110000}
     \x{d800}\x{1234}
-    \x{fffe}
 
 /(*UTF16)\x{11234}/
   abcd\x{11234}pqr
 
+/(*UTF)\x{11234}/I
+  abcd\x{11234}pqr
+
+/(*UTF-32)\x{11234}/
+  abcd\x{11234}pqr
+
 /(*CRLF)(*UTF16)(*BSR_UNICODE)a\Rb/I
+
+/(*CRLF)(*UTF32)(*BSR_UNICODE)a\Rb/I
 
 /\h/SI8
     ABC\x{09}
@@ -194,6 +205,11 @@ correctly, but that messes up comparisons). --/
 
 /\h*A/SI8
     CDBABC
+    \x{2000}ABC 
+
+/\R*A/SI8<bsr_unicode>
+    CDBABC
+    \x{2028}A  
 
 /\v+A/SI8
 
@@ -233,11 +249,52 @@ correctly, but that messes up comparisons). --/
 
 /a/8
     \x{10000}\>1
+    \x{10000}ab\>1
     \x{10000}ab\>2
     \x{10000}ab\>3
     \x{10000}ab\>4
     \x{10000}ab\>5
 
 /í¼€/8
+
+/\w+\x{C4}/8BZ
+    a\x{C4}\x{C4}
+
+/\w+\x{C4}/8BZT1
+    a\x{C4}\x{C4}
+    
+/\W+\x{C4}/8BZ
+    !\x{C4}
+ 
+/\W+\x{C4}/8BZT1
+    !\x{C4}
+
+/\W+\x{A1}/8BZ
+    !\x{A1}
+ 
+/\W+\x{A1}/8BZT1
+    !\x{A1}
+
+/X\s+\x{A0}/8BZ
+    X\x20\x{A0}\x{A0}
+
+/X\s+\x{A0}/8BZT1
+    X\x20\x{A0}\x{A0}
+
+/\S+\x{A0}/8BZ
+    X\x{A0}\x{A0}
+
+/\S+\x{A0}/8BZT1
+    X\x{A0}\x{A0}
+
+/\x{a0}+\s!/8BZ
+    \x{a0}\x20!
+
+/\x{a0}+\s!/8BZT1
+    \x{a0}\x20!
+
+/(*UTF)abc/9
+
+/abc/89
 
 /-- End of testinput18 --/
