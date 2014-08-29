@@ -1,25 +1,22 @@
-.TH PCREPOSIX 3
+.TH PCREPOSIX 3 "09 January 2012" "PCRE 8.30"
 .SH NAME
 PCRE - Perl-compatible regular expressions.
-.SH "SYNOPSIS OF POSIX API"
+.SH "SYNOPSIS"
 .rs
 .sp
 .B #include <pcreposix.h>
 .PP
-.SM
+.nf
 .B int regcomp(regex_t *\fIpreg\fP, const char *\fIpattern\fP,
-.ti +5n
-.B int \fIcflags\fP);
-.PP
+.B "     int \fIcflags\fP);"
+.sp
 .B int regexec(regex_t *\fIpreg\fP, const char *\fIstring\fP,
-.ti +5n
-.B size_t \fInmatch\fP, regmatch_t \fIpmatch\fP[], int \fIeflags\fP);
-.PP
-.B size_t regerror(int \fIerrcode\fP, const regex_t *\fIpreg\fP,
-.ti +5n
-.B char *\fIerrbuf\fP, size_t \fIerrbuf_size\fP);
-.PP
+.B "     size_t \fInmatch\fP, regmatch_t \fIpmatch\fP[], int \fIeflags\fP);"
+.B "     size_t regerror(int \fIerrcode\fP, const regex_t *\fIpreg\fP,"
+.B "     char *\fIerrbuf\fP, size_t \fIerrbuf_size\fP);"
+.sp
 .B void regfree(regex_t *\fIpreg\fP);
+.fi
 .
 .SH DESCRIPTION
 .rs
@@ -31,7 +28,7 @@ expression 8-bit library. See the
 .\"
 documentation for a description of PCRE's native API, which contains much
 additional functionality. There is no POSIX-style wrapper for PCRE's 16-bit
-library.
+and 32-bit library.
 .P
 The functions described here are just wrapper functions that ultimately call
 the PCRE native API. Their prototypes are defined in the \fBpcreposix.h\fP

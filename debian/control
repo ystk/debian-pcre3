@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer:  Mark Baker <mark@mnb.org.uk>
 Standards-Version: 3.9.3
-Build-Depends: debhelper (>= 5.0.22), dpkg-dev (>= 1.16.0)
+Build-Depends: debhelper (>= 5.0.22), dpkg-dev (>= 1.16.0), dh-autoreconf
 
 Package: libpcre3
 Section: libs
@@ -58,6 +58,7 @@ Description: Perl 5 Compatible Regular Expression Library - C++ runtime files
 Package: libpcre3-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Depends: libc6-dev, libpcre3 (= ${binary:Version}), libpcrecpp0 (= ${binary:Version}), ${misc:Depends}
 Conflicts: libpcre1-dev, libpcre2-dev
 Description: Perl 5 Compatible Regular Expression Library - development files

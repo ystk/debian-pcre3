@@ -3,3 +3,5 @@ pcreposix.patch
 pcre_info.patch
 pcregrep.1-patch
 soname.patch
+no_jit_ppc64el.patch
+Fix-silly-quantifier-size-check.patch

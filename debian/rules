@@ -27,35 +27,38 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 INSTALL_PROGRAM += -s
 endif
 
-
-config.status: configure
+configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
+	dh_autoreconf
 	CC_FOR_BUILD=cc CFLAGS="$(CFLAGS)" ./configure \
 		--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr --mandir=\$${prefix}/share/man \
 		--infodir=\$${prefix}/share/info \
 		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
-		--enable-utf8 --enable-unicode-properties
+		--enable-utf8 --enable-unicode-properties \
+		--disable-silent-rules \
+		$(shell . debian/jit-test)
+	touch configure-stamp
 
 build: build-arch build-indep
 build-arch: build-stamp
 build-indep: build-stamp
-build-stamp:  config.status
+build-stamp:  configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
 	$(MAKE)
 ifeq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
-	$(MAKE) check
+	$(MAKE) check VERBOSE=1
 endif
 
 	touch build-stamp
 
-clean: config.status
+clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp
+	rm -f configure-stamp build-stamp
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) distclean
 ###	-test -r /usr/share/misc/config.sub && \
@@ -63,6 +66,7 @@ clean: config.status
 ###	-test -r /usr/share/misc/config.guess && \
 ###	  cp -f /usr/share/misc/config.guess config.guess
 	rm -f dftables testsavedregex
+	dh_autoreconf_clean
 	dh_clean
 
 install: build
@@ -85,6 +89,9 @@ binary-arch: build install
 	mkdir -p debian/libpcre3/lib/$(DEB_HOST_MULTIARCH)
 	mv debian/libpcre3/usr/lib/$(DEB_HOST_MULTIARCH)/libpcre.so.* debian/libpcre3/lib/$(DEB_HOST_MULTIARCH)
 	ln -sf /lib/$(DEB_HOST_MULTIARCH)/libpcre.so.3 debian/libpcre3-dev/usr/lib/$(DEB_HOST_MULTIARCH)/libpcre.so
+	# we never need to reference the library path in pcre-config on
+	# Debian, so clip it out so that the script will be multiarch-safe.
+	sed -i -e"s,/$(DEB_HOST_MULTIARCH),,g" debian/libpcre3-dev/usr/bin/pcre-config
 
 	dh_link -a
 
