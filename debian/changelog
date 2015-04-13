@@ -1,3 +1,29 @@
+pcre3 (2:8.35-3.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Upstream patch for heap buffer overflow, CVE-2014-8964, taken from
+    1:8.36-1 (Closes: #770478)
+    Thanks to Salvatore Bonaccorso for the reminder.
+
+ -- Ivo De Decker <ivodd@debian.org>  Sat, 06 Dec 2014 19:58:19 +0100
+
+pcre3 (2:8.35-3.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Update shlibs dependency to 1:8.35 for new symbol introduced in upstream
+    version 8.35 (Closes: #767907)
+  * Revert upload of upstream version 8.36 to allow this upload to migrate to
+    jessie.
+
+ -- Ivo De Decker <ivodd@debian.org>  Sat, 06 Dec 2014 19:21:39 +0100
+
+pcre3 (1:8.35-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Enable build hardening flags (closes: #656008).
+
+ -- Michael Gilbert <mgilbert@debian.org>  Fri, 19 Sep 2014 01:48:23 +0000
+
 pcre3 (1:8.35-3) unstable; urgency=medium
 
   Thanks to Simon McVittie for all of the work on this:
