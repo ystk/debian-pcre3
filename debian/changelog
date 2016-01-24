@@ -1,3 +1,62 @@
+pcre3 (2:8.35-3.3+deb8u2) jessie; urgency=medium
+
+  * Non-maintainer upload.
+  * Add additional CVE references and bug closer to previous changelog.
+    CVE-2015-2327 fix was included in the previous 2:8.35-3.3+deb8u1 upload.
+    CVE-2015-8384 different issue than CVE-2015-3210 but fixed with same
+    commit.
+    CVE-2015-8388 different issue than CVE-2015-5073 but fixed with same
+    commit.
+    Add bug closer to bugs in the BTS retrospectively.
+  * Add 0001-Fix-compile-time-loop-for-recursive-reference-within.patch.
+    CVE-2015-2328: Stack-based buffer overflow in compile_regex().
+  * Add 794589-information-disclosure.patch.
+    CVE-2015-8382: Fix "pcre_exec does not fill offsets for certain regexps"
+    leading to information disclosure. (Closes: #794589)
+  * Add 0001-Fix-buffer-overflow-for-repeated-conditional-when-re.patch.
+    CVE-2015-8383: Buffer overflow caused by repeated conditional group.
+  * Add 0001-Fix-named-forward-reference-to-duplicate-group-numbe.patch.
+    CVE-2015-8385: Buffer overflow caused by forward reference by name to
+    certain group.
+  * Add 0001-Fix-buffer-overflow-for-lookbehind-within-mutually-r.patch.
+    CVE-2015-8386: Buffer overflow caused by lookbehind assertion.
+  * Add 0001-Add-integer-overflow-check-to-n-code.patch.
+    CVE-2015-8387: Integer overflow in subroutine calls.
+  * Add 0001-Fix-overflow-when-ovector-has-size-1.patch.
+    CVE-2015-8380: Heap-based buffer overflow in pcre_exec. (Closes: #806467)
+  * Add 0001-Fix-infinite-recursion-in-the-JIT-compiler-when-cert.patch.
+    CVE-2015-8389: Infinite recursion in JIT compiler when processing
+    certain patterns.
+  * Add 0001-Fix-bug-for-classes-containing-sequences.patch.
+    CVE-2015-8390: Reading from uninitialized memory when processing certain
+    patterns.
+  * Add 0001-Fix-run-for-ever-bug-for-deeply-nested-sequences.patch.
+    CVE-2015-8391: Some pathological patterns causes pcre_compile() to run
+    for a very long time.
+  * Add 0001-Fix-buffer-overflow-for-named-references-in-situatio.patch.
+    CVE-2015-8392: Buffer overflow caused by certain patterns with
+    duplicated named groups.
+  * Add 0001-Make-pcregrep-q-override-l-and-c-for-compatibility-w.patch.
+    CVE-2015-8393: Information leak when running pcgrep -q on crafted
+    binary.
+  * Add 0001-Add-missing-integer-overflow-checks.patch.
+    CVE-2015-8394: Integer overflow caused by missing check for certain
+    conditions.
+  * Add 0001-Hack-in-yet-other-patch-for-a-bug-in-size-computatio.patch.
+    CVE-2015-8381: Heap Overflow in compile_regex().
+    CVE-2015-8395: Buffer overflow caused by certain references.
+    (Closes: #796762)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 29 Dec 2015 09:19:11 +0100
+
+pcre3 (2:8.35-3.3+deb8u1) jessie; urgency=medium
+
+  * CVE-2015-2325 CVE-2015-2326 CVE-2015-2327 CVE-2015-3210
+    CVE-2015-5073 CVE-2015-8384 CVE-2015-8388
+    (Closes: #781795, #783285, #787433, #790000)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sun, 16 Aug 2015 11:37:39 +0000
+
 pcre3 (2:8.35-3.3) unstable; urgency=medium
 
   * Non-maintainer upload.
