@@ -1,3 +1,14 @@
+pcre3 (8.02-1.1+deb6u1) squeeze-lts; urgency=high
+
+  * Non-maintainer upload by the Debian LTS team.
+  * Fix ZDI-CAN-3542: PCRE Regular Expression Compilation Stack Buffer Overflow
+    Remote Code Execution Vulnerability.
+    PCRE did not validate that handling the (*ACCEPT) verb will occur within
+    the bounds of the cworkspace stack buffer, leading to a stack buffer
+    overflow.
+
+ -- Markus Koschany <apo@debian.org>  Mon, 29 Feb 2016 12:09:59 +0100
+
 pcre3 (8.02-1.1) unstable; urgency=low
 
   * Non-maintainer upload.

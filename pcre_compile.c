@@ -353,7 +353,8 @@ static const char error_texts[] =
   "digit expected after (?+\0"
   "] is an invalid data character in JavaScript compatibility mode\0"
   /* 65 */
-  "different names for subpatterns of the same number are not allowed\0";
+  "different names for subpatterns of the same number are not allowed\0"
+  "regular expression is too complicated\0";
 
 /* Table to identify digits and hex digits. This is used when compiling
 patterns. Note that the tables in chartables are dependent on the locale, and
@@ -2767,7 +2768,8 @@ for (;; ptr++)
 #endif
     if (code > cd->start_workspace + WORK_SIZE_CHECK)   /* Check for overrun */
       {
-      *errorcodeptr = ERR52;
+      *errorcodeptr = (code >= cd->start_workspace + 4096)?
+          ERR52:ERR66;
       goto FAILED;
       }
 
@@ -4545,8 +4547,15 @@ we set the flag only if there is a literal "\r" or "\n" in the class. */
             cd->had_accept = TRUE;
             for (oc = cd->open_caps; oc != NULL; oc = oc->next)
               {
-              *code++ = OP_CLOSE;
-              PUT2INC(code, 0, oc->number);
+              if (lengthptr != NULL)
+                {
+                *lengthptr += 1 + 2;
+                }
+              else
+                {
+                *code++ = OP_CLOSE;
+                PUT2INC(code, 0, oc->number);
+                }
               }
             }
           *code++ = verbs[i].op;

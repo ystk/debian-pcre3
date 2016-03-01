@@ -143,7 +143,8 @@ static const int eint[] = {
   REG_BADPAT,  /* digit expected after (?+ */
   REG_BADPAT,  /* ] is an invalid data character in JavaScript compatibility mode */
   /* 65 */
-  REG_BADPAT   /* different names for subpatterns of the same number are not allowed */
+  REG_BADPAT,  /* different names for subpatterns of the same number are not allowed */
+  REG_BADPAT   /* pattern too complicated */
 };
 
 /* Table of texts corresponding to POSIX error codes */
