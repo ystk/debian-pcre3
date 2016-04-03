@@ -1,3 +1,28 @@
+pcre3 (2:8.35-3.3+deb8u4) jessie; urgency=medium
+
+  * Non-maintainer upload.
+  * Add 0001-Fixed-an-issue-with-nested-table-jumps.patch.
+    Fixes issue with nested table jumps. (Closes: #819050)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 25 Mar 2016 19:58:10 +0100
+
+pcre3 (2:8.35-3.3+deb8u3) jessie; urgency=medium
+
+  * Non-maintainer upload.
+  * Refresh CVE-2015-2325_CVE-2015-2326_CVE-2015-3210_CVE-2015-5073.patch.
+    Drop addition of "error text" for error ERR86 in pcre_compile.c.  This
+    change belongs to upstream revision 1481 (Give error for \x{} and \o{}).
+  * Add 0001-Give-error-for-x-and-o.patch.
+    Give error for \x{} and \o{}.
+  * Add 0001-Fix-workspace-overflow-for-ACCEPT-with-deeply-nested.patch.
+    CVE-2016-3191: workspace overflow for (*ACCEPT) with deeply nested
+    parentheses. (Closes: #815921)
+  * Add 0001-Yet-another-duplicate-name-bugfix-by-overestimating-.patch.
+    CVE-2016-1283: heap buffer overflow in handling of duplicate named
+    groups. (Closes: #809706)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 25 Mar 2016 07:05:50 +0100
+
 pcre3 (2:8.35-3.3+deb8u2) jessie; urgency=medium
 
   * Non-maintainer upload.

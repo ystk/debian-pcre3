@@ -21,3 +21,7 @@ CVE-2015-2325_CVE-2015-2326_CVE-2015-3210_CVE-2015-5073.patch
 0001-Make-pcregrep-q-override-l-and-c-for-compatibility-w.patch
 0001-Add-missing-integer-overflow-checks.patch
 0001-Hack-in-yet-other-patch-for-a-bug-in-size-computatio.patch
+0001-Give-error-for-x-and-o.patch
+0001-Fix-workspace-overflow-for-ACCEPT-with-deeply-nested.patch
+0001-Yet-another-duplicate-name-bugfix-by-overestimating-.patch
+0001-Fixed-an-issue-with-nested-table-jumps.patch
